@@ -12,11 +12,17 @@ export class Base {
     @Column()
     title: string
 
-    @Column({type: "bytea"})
-    image: Buffer
+    // @Column({type: "bytea"})
+    // image: Buffer
 
-    @Column({ type: "bytea" })
-    imageSlapes: Buffer
+    @Column()
+    image: string
+
+    // @Column({ type: "bytea" })
+    // imageSlapes: Buffer
+
+    @Column()
+    imageSlapes: string
 
     @Column()
     address: string
