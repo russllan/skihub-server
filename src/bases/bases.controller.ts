@@ -1,18 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UsePipes, ValidationPipe, Req } from '@nestjs/common';
 import { BasesService } from './bases.service';
 import { CreateBaseDto } from './dto/create-base.dto';
 import { UpdateBaseDto } from './dto/update-base.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('bases')
 export class BasesController {
   constructor(private readonly basesService: BasesService) {}
 
-  @Post()
-  create(@Body() createBaseDto: CreateBaseDto) {
-    return this.basesService.create(createBaseDto);
+  @Post('create')
+  @UseGuards(JwtAuthGuard)
+  @UsePipes(new ValidationPipe)
+  create(@Body() createBaseDto: CreateBaseDto, @Req() req) {
+    return this.basesService.create(createBaseDto, +req.user.id);
   }
 
-  @Get()
+  @Get('getAll')
   findAll() {
     return this.basesService.findAll();
   }
@@ -23,6 +26,7 @@ export class BasesController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateBaseDto: UpdateBaseDto) {
     return this.basesService.update(+id, updateBaseDto);
   }

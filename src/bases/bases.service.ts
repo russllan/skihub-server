@@ -1,26 +1,72 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateBaseDto } from './dto/create-base.dto';
 import { UpdateBaseDto } from './dto/update-base.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Base } from './entities/base.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BasesService {
-  create(createBaseDto: CreateBaseDto) {
-    return 'This action adds a new base';
+  constructor(
+    @InjectRepository(Base) private readonly baseRepository: Repository<Base>,
+  ) {}
+
+  async create(createBaseDto: CreateBaseDto, id: number) {
+    const isExist = await this.baseRepository.findBy({
+      user: { id },
+      title: createBaseDto.title,
+    });
+
+    if (isExist.length)
+      throw new BadRequestException('This base already exist!');
+
+    const newBases = {
+      title: createBaseDto.title,
+      image: createBaseDto.image,
+      imageSlapes: createBaseDto.image,
+      address: createBaseDto.address,
+      text: createBaseDto.text,
+      user: { id },
+    };
+
+    if (!newBases) throw new BadRequestException('somithing went wrong...');
+    return await this.baseRepository.save(newBases);
   }
 
-  findAll() {
-    return `This action returns all bases`;
+  async findAll() {
+    const bases = await this.baseRepository.find();
+    if (!bases) throw new NotFoundException('Not found bases');
+    return bases;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} base`;
+  async findOne(id: number) {
+    const bases = await this.baseRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!bases) throw new NotFoundException(`Not found base ${id}`);
+    return bases;
   }
 
-  update(id: number, updateBaseDto: UpdateBaseDto) {
-    return `This action updates a #${id} base`;
+  async update(id: number, updateBaseDto: UpdateBaseDto) {
+    const bases = await this.baseRepository.findOne({
+      where: {id: id}
+    })
+
+    if(!bases) throw new NotFoundException(`Not found base ${id}`)
+    return await this.baseRepository.update(id, updateBaseDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} base`;
+  async remove(id: number) {
+    const bases = await this.baseRepository.findOne({
+      where: {id: id}
+    })
+
+    if(!bases) throw new NotFoundException('Not found base')
+    return await this.baseRepository.delete(id);
   }
 }
