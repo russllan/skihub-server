@@ -32,7 +32,7 @@ export class Tour {
   endDate: Date;
 
   @Column({ default: false })
-  isBooked: string;
+  isBooked: boolean;
 
   // Отношение, связи
   @ManyToOne(() => User, (user) => user.toures, {onDelete: "CASCADE"})
