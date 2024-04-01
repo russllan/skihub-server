@@ -1,5 +1,6 @@
 import { Base } from 'src/bases/entities/base.entity';
 import { Product } from 'src/product/entities/product.entity';
+import { Review } from 'src/review/entities/review.entity';
 import { Tour } from 'src/tour/entities/tour.entity';
 import {
   Column,
@@ -36,5 +37,8 @@ export class User {
 
   @OneToMany(() => Base, (base) => base.user)
   bases: Base[]
+
+  @OneToMany(() => Review, (review) => review.user)
+  review: Review[]
   
 }
