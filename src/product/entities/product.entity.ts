@@ -16,8 +16,11 @@ export class Product {
   @Column()
   title: string;
 
-  @Column({ type: 'bytea' })
-  image: Buffer;
+  // @Column({ type: 'bytea' })
+  // image: Buffer;
+
+  @Column()
+  image: string;
 
   @Column()
   amount: number;
@@ -29,7 +32,7 @@ export class Product {
   type: string;
 
   @Column({ nullable: true })
-  size: number;
+  size: string;
 
   @Column({ nullable: true })
   height: number;
