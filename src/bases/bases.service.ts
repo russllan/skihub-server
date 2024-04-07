@@ -38,7 +38,7 @@ export class BasesService {
   }
 
   async findAll() {
-    const bases = await this.baseRepository.find({relations: {reviews: true}});
+    const bases = await this.baseRepository.find({relations: {reviews: true, productes: true}});
     if (!bases) throw new NotFoundException('Not found bases');
     return bases;
   }
