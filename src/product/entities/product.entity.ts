@@ -1,10 +1,12 @@
 import { Base } from 'src/bases/entities/base.entity';
+import { BookedProduct } from 'src/booked-product/entities/booked-product.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -68,4 +70,7 @@ export class Product {
   @ManyToOne(() => Base, (base) => base.productes, {onDelete: "CASCADE"})
   @JoinColumn({name: "base_id"})
   base: Base
+
+  @OneToMany(() => BookedProduct, (booked) => booked.product, {onDelete: 'CASCADE'})
+  bookedProduct: BookedProduct[]
 }
