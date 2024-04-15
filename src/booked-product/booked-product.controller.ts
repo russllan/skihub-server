@@ -3,7 +3,9 @@ import { BookedProductService } from './booked-product.service';
 import { CreateBookedProductDto } from './dto/create-booked-product.dto';
 import { UpdateBookedProductDto } from './dto/update-booked-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('booked-product')
 @Controller('booked-product')
 export class BookedProductController {
   constructor(private readonly bookedProductService: BookedProductService) {}

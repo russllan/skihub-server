@@ -3,7 +3,9 @@ import { TourService } from './tour.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('tour')
 @Controller('tour')
 export class TourController {
   constructor(private readonly tourService: TourService) {}

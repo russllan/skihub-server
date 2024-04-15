@@ -3,7 +3,9 @@ import { BasesService } from './bases.service';
 import { CreateBaseDto } from './dto/create-base.dto';
 import { UpdateBaseDto } from './dto/update-base.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('base')
 @Controller('bases')
 export class BasesController {
   constructor(private readonly basesService: BasesService) {}
