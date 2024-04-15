@@ -5,7 +5,12 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-  app.enableCors();
+  
+  app.enableCors({
+    origin: 'https://skihub-server-production.up.railway.app/', // Разрешенный источник запросов (замените на свой домен)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Разрешенные методы HTTP
+    allowedHeaders: ['Content-Type', 'Authorization'], // Разрешенные заголовки запросов
+  });;
 
   const config = new DocumentBuilder()
   .setTitle('Cats example')
@@ -21,7 +26,6 @@ async function bootstrap() {
   .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
