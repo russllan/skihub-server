@@ -3,13 +3,18 @@ import { BasesService } from './bases.service';
 import { CreateBaseDto } from './dto/create-base.dto';
 import { UpdateBaseDto } from './dto/update-base.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('base')
 @Controller('bases')
 export class BasesController {
   constructor(private readonly basesService: BasesService) {}
 
+  @ApiResponse({ 
+    status: 200, 
+    description: 'Returns the newly created base', 
+    type: CreateBaseDto, // Указываем тип DTO для ответа
+  })
   @Post('create')
   @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe)
