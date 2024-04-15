@@ -17,7 +17,8 @@ import { BookedProductModule } from './booked-product/booked-product.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
+        type: 'postgres', //add
+        url: configService.get('DATABASE_URL'),
         host: configService.get('DATABASE_HOST'),
         port: configService.get('DATABASE_PORT'),
         username: configService.get('DATABASE_USERNAME'),
