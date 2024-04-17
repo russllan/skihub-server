@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('product')
 @Controller('product')
@@ -11,6 +11,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Post('create')
+  @ApiBody({type: CreateProductDto})
   @UseGuards(JwtAuthGuard)
   // @UsePipes(new ValidationPipe)
   create(@Body() createProductDto: CreateProductDto, @Req() req) {
@@ -30,6 +31,7 @@ export class ProductController {
   }
 
   @Patch(':id')
+  @ApiBody({type: UpdateProductDto})
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateProductDto: UpdateProductDto) {
     return this.productService.update(+id, updateProductDto);
