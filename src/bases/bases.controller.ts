@@ -3,19 +3,15 @@ import { BasesService } from './bases.service';
 import { CreateBaseDto } from './dto/create-base.dto';
 import { UpdateBaseDto } from './dto/update-base.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('base')
 @Controller('bases')
 export class BasesController {
   constructor(private readonly basesService: BasesService) {}
 
-  @ApiResponse({ 
-    status: 200, 
-    description: 'Returns the newly created base', 
-    type: CreateBaseDto, // Указываем тип DTO для ответа
-  })
   @Post('create')
+  @ApiBody({type: CreateBaseDto})
   @UseGuards(JwtAuthGuard)
   @UsePipes(new ValidationPipe)
   create(@Body() createBaseDto: CreateBaseDto, @Req() req) {
@@ -33,6 +29,7 @@ export class BasesController {
   }
 
   @Patch(':id')
+  @ApiBody({type: UpdateBaseDto})
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateBaseDto: UpdateBaseDto) {
     return this.basesService.update(+id, updateBaseDto);
