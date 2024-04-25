@@ -1,5 +1,6 @@
 import { Base } from 'src/bases/entities/base.entity';
 import { BookedProduct } from 'src/booked-product/entities/booked-product.entity';
+import { BookedTour } from 'src/booked-tour/entities/booked-tour.entity';
 import { Product } from 'src/product/entities/product.entity';
 import { Review } from 'src/review/entities/review.entity';
 import { Tour } from 'src/tour/entities/tour.entity';
@@ -44,4 +45,8 @@ export class User {
 
   @OneToMany(() => BookedProduct, (booked) => booked.user) 
   bookedProduct: BookedProduct[]
+
+  // booked-tour
+  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.user)
+  bookedTour: BookedTour[]
 }

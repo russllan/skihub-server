@@ -1,6 +1,7 @@
 import { Base } from 'src/bases/entities/base.entity';
+import { BookedTour } from 'src/booked-tour/entities/booked-tour.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('tour')
 export class Tour {
@@ -43,4 +44,7 @@ export class Tour {
   @JoinColumn({name: "base_id"})
   base: Base
 
+  // booked-tour
+  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.tour)
+  bookedTour: BookedTour[]
 }
