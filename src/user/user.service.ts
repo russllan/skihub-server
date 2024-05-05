@@ -49,8 +49,10 @@ export class UserService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const user = await this.userRepository.find();
+    if(!user) throw new NotFoundException('Пользователей нет');
+    return user;
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
