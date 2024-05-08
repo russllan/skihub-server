@@ -12,32 +12,32 @@ export class TourController {
 
   @Post('create')
   @ApiBody({type: CreateTourDto})
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   create(@Body() createTourDto: CreateTourDto, @Req() req) {
     return this.tourService.create(createTourDto, +req.user.id);
   }
 
   @Get()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.tourService.findAll();
   }
 
   @Get(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
     return this.tourService.findOne(+id);
   }
 
   @Patch(':id')
   @ApiBody({type: UpdateTourDto})
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateTourDto: UpdateTourDto) {
     return this.tourService.update(+id, updateTourDto);
   }
 
   @Delete(':id')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.tourService.remove(+id);
   }
