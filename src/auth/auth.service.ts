@@ -1,5 +1,5 @@
 import { UserService } from './../user/user.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as argon from 'argon2';
 import { IUser } from 'src/types/types';
@@ -13,6 +13,7 @@ export class AuthService {
 
   async validateUser(phoneNumber: string, password: string): Promise<any> {
     const user = await this.userService.findOne(phoneNumber);
+    if(!user) throw new NotFoundException("Такой пользователь не зарегистрирован!");
     const passwordParse = await argon.verify(user.password, password);
     if (user && passwordParse) {
       return user;
@@ -23,7 +24,7 @@ export class AuthService {
   async login(user: IUser) {
     const {id, phoneNumber} = user
     return {
-      id, phoneNumber, token: this.jwtService.sign({ id: user.id, phoneNumber: user.phoneNumber })
+      id, phoneNumber, token: this.jwtService.sign({ id: +user.id, phoneNumber: user.phoneNumber })
     }
   }
 }
