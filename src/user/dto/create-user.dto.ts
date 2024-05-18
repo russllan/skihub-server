@@ -3,7 +3,7 @@ import { MinLength } from "class-validator";
 
 export class CreateUserDto {
     @ApiProperty()
-    id: string;
+    id: number;
 
     @ApiProperty()
     phoneNumber: string;
