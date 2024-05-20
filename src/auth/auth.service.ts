@@ -22,9 +22,9 @@ export class AuthService {
   }
 
   async login(user: IUser) {
-    const {id, phoneNumber} = user
+    const {id, phoneNumber, role, isBanned} = user
     return {
-      id, phoneNumber, token: this.jwtService.sign({ id: +user.id, phoneNumber: user.phoneNumber })
+      id, phoneNumber, role, isBanned, token: this.jwtService.sign({ id: +user.id, phoneNumber: user.phoneNumber })
     }
   }
 }
