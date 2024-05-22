@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, UsePipes, ValidationPipe, Req, UseGuards, Request } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -34,8 +34,9 @@ export class UserController {
     return this.userService.update(+req.user.id, updateUserDto);
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.userService.remove(+id);
-  // }
+  @Delete("delete")
+  @UseGuards(JwtAuthGuard)
+  remove(@Req() req) {
+    return this.userService.remove(+req.user.id);
+  }
 }
