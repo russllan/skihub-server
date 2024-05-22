@@ -26,6 +26,8 @@ export class UserService {
     const user = await this.userRepository.save({
       phoneNumber: createUserDto.phoneNumber,
       password: await argon2.hash(createUserDto.password),
+      role: createUserDto.role,
+      isBanned: createUserDto.isBanned,
     });
 
     const token = this.jwtService.sign({
@@ -63,7 +65,11 @@ export class UserService {
     return await this.userRepository.update(id, updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: number) {
+    const user = await this.userRepository.findOne({
+      where: {id: id}
+    })
+    if(!user) throw new NotFoundException("Такого пользователя нет!")
+    return await this.userRepository.delete(id);
   }
 }
