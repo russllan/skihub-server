@@ -3,9 +3,10 @@ import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('product')
+@ApiBearerAuth('JWT-auth')
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -22,6 +23,12 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   findAll() {
     return this.productService.findAll();
+  }
+
+  @Get('adminGet')
+  @UseGuards(JwtAuthGuard)
+  findForAdmin(@Req() req) {
+    return this.productService.findForAdmin(+req.user.id);
   }
 
   @Get(':id')

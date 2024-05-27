@@ -2,10 +2,11 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Validatio
 import { BookedTourService } from './booked-tour.service';
 import { CreateBookedTourDto } from './dto/create-booked-tour.dto';
 import { UpdateBookedTourDto } from './dto/update-booked-tour.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @ApiTags('booked-tour')
+@ApiBearerAuth('JWT-auth')
 @Controller('booked-tour')
 export class BookedTourController {
   constructor(private readonly bookedTourService: BookedTourService) {}
@@ -20,6 +21,12 @@ export class BookedTourController {
   @Get()
   findAll() {
     return this.bookedTourService.findAll();
+  }
+
+  @Get('adminGet')
+  @UseGuards(JwtAuthGuard)
+  findForAdmin(@Req() req) {
+    return this.bookedTourService.findForAdmin(+req.user.id);
   }
 
   @Get(':id')

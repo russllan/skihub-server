@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -8,16 +12,17 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class TourService {
   constructor(
-    @InjectRepository(Tour) private readonly tourRepository: Repository<Tour>
-  ){}
+    @InjectRepository(Tour) private readonly tourRepository: Repository<Tour>,
+  ) {}
 
   async create(createTourDto: CreateTourDto, id: number) {
     const isExist = await this.tourRepository.findBy({
-     startDate: createTourDto.startDate, 
-     endDate: createTourDto.endDate
+      startDate: createTourDto.startDate,
+      endDate: createTourDto.endDate,
     });
 
-    if(isExist.length) throw new BadRequestException('This tour already exist!')
+    if (isExist.length)
+      throw new BadRequestException('This tour already exist!');
 
     const newTour = {
       title: createTourDto.title,
@@ -29,43 +34,51 @@ export class TourService {
       startDate: createTourDto.startDate,
       endDate: createTourDto.endDate,
       base: createTourDto.base,
-      user: { id }
-    }
-    if(!newTour) throw new BadRequestException('somithing went wrong...')
+      user: { id },
+    };
+    if (!newTour) throw new BadRequestException('somithing went wrong...');
     return await this.tourRepository.save(newTour);
   }
 
   async findAll() {
     const tours = await this.tourRepository.find({
-      relations: { user: true, base: true }
-    })
-    if(!tours) throw new NotFoundException('Not found tours')
+      relations: { user: true, base: true },
+    });
+    if (!tours) throw new NotFoundException('Not found tours');
     return tours;
   }
 
   async findOne(id: number) {
     const tour = await this.tourRepository.findOne({
-      where: { id: id }
-    })
+      where: { id: id },
+    });
 
-    if(!tour) throw new NotFoundException('Not found this tour')
+    if (!tour) throw new NotFoundException('Not found this tour');
     return tour;
   }
 
   async update(id: number, updateTourDto: UpdateTourDto) {
     const tour = await this.tourRepository.findOne({
-      where: {id: id}
-    })
+      where: { id: id },
+    });
 
-    if(!tour) throw new NotFoundException('Not found this tour')
-    return await this.tourRepository.update(id, updateTourDto)
+    if (!tour) throw new NotFoundException('Not found this tour');
+    return await this.tourRepository.update(id, updateTourDto);
   }
 
   async remove(id: number) {
     const tour = await this.tourRepository.findOne({
-      where: {id: id}
-    })
-    if(!tour) throw new NotFoundException('Not found this tour')
-    return await this.tourRepository.delete(id)
+      where: { id: id },
+    });
+    if (!tour) throw new NotFoundException('Not found this tour');
+    return await this.tourRepository.delete(id);
+  }
+
+  async findForAdmin(id: number) {
+    const tour = await this.tourRepository.findOne({
+      where: { user: { id } },
+    });
+    if (!tour) throw new NotFoundException('Туров не найдено!');
+    return tour;
   }
 }

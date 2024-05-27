@@ -108,4 +108,13 @@ export class BookedProductService {
       throw new NotFoundException('Not found booked product!');
     return await this.bookedProductRepository.delete(id);
   }
+
+  async findForAdmin(id: number) {
+    const bookedProduct = await this.bookedProductRepository.findOne({
+      where: { user: { id } },
+    });
+    if (!bookedProduct)
+      throw new NotFoundException('Такого забр. продукта нет!');
+    return bookedProduct;
+  }
 }
