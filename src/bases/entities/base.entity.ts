@@ -31,7 +31,7 @@ export class Base {
     text: string
 
     // Oтношения
-    @ManyToOne(() => User, (user) => user.toures, {onDelete: "CASCADE"})
+    @ManyToOne(() => User, (user) => user.bases, {onDelete: "CASCADE"})
     @JoinColumn({name: "user_id"})
     user: User
 

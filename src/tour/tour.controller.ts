@@ -1,11 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req, Request } from '@nestjs/common';
 import { TourService } from './tour.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('tour')
+@ApiBearerAuth('JWT-auth')
 @Controller('tour')
 export class TourController {
   constructor(private readonly tourService: TourService) {}
@@ -23,6 +24,12 @@ export class TourController {
     return this.tourService.findAll();
   }
 
+  @Get('adminGet')
+  @UseGuards(JwtAuthGuard)
+  findForAdmin(@Request() req) {
+    return this.tourService.findForAdmin(+req.user.id);
+  }
+  
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {
@@ -41,4 +48,5 @@ export class TourController {
   remove(@Param('id') id: string) {
     return this.tourService.remove(+id);
   }
+
 }

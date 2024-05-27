@@ -15,7 +15,7 @@ export class BookedTourService {
     @InjectRepository(BookedTour)
     private readonly bookedTourRepository: Repository<BookedTour>,
   ) {}
-  
+
   async create(createBookedTourDto: CreateBookedTourDto, id: number) {
     const isExist = await this.bookedTourRepository.findBy({
       user: createBookedTourDto.user,
@@ -25,7 +25,7 @@ export class BookedTourService {
       throw new BadRequestException('Этот Тур уже забронирован!');
     const newBookedTour = {
       isCancel: createBookedTourDto.isCancel,
-      user: {id},
+      user: { id },
       tour: createBookedTourDto.tour,
     };
     return await this.bookedTourRepository.save(newBookedTour);
@@ -61,5 +61,13 @@ export class BookedTourService {
     });
     if (!bookedTour) throw new NotFoundException('Забронированной тура нет!');
     return await this.bookedTourRepository.delete(id);
+  }
+
+  async findForAdmin(id: number) {
+    const bookedTour = await this.bookedTourRepository.findOne({
+      where: { user: { id } },
+    });
+    if (!bookedTour) throw new NotFoundException('Такого забр. тура нет!');
+    return bookedTour;
   }
 }

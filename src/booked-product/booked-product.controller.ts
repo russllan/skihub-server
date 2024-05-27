@@ -3,9 +3,10 @@ import { BookedProductService } from './booked-product.service';
 import { CreateBookedProductDto } from './dto/create-booked-product.dto';
 import { UpdateBookedProductDto } from './dto/update-booked-product.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('booked-product')
+@ApiBearerAuth('JWT-auth')
 @Controller('booked-product')
 export class BookedProductController {
   constructor(private readonly bookedProductService: BookedProductService) {}
@@ -22,6 +23,12 @@ export class BookedProductController {
   @UseGuards(JwtAuthGuard)
   findAll() {
     return this.bookedProductService.findAll();
+  }
+
+  @Get('adminGet')
+  @UseGuards(JwtAuthGuard)
+  findForAdmin(@Req() req) {
+    return this.bookedProductService.findForAdmin(+req.user.id);
   }
 
   @Get(':id')

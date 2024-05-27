@@ -101,4 +101,12 @@ export class ProductService {
     if (!product) throw new NotFoundException(`Not found product`);
     return await this.productRepository.delete(id);
   }
+
+  async findForAdmin(id: number) {
+    const product = await this.productRepository.findOne({
+      where: { user: { id } },
+    });
+    if (!product) throw new NotFoundException('Такого продукта нет!');
+    return product;
+  }
 }

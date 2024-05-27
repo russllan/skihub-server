@@ -38,7 +38,9 @@ export class BasesService {
   }
 
   async findAll() {
-    const bases = await this.baseRepository.find({relations: {reviews: true, productes: true}});
+    const bases = await this.baseRepository.find({
+      relations: { reviews: true, productes: true, user: true },
+    });
     if (!bases) throw new NotFoundException('Not found bases');
     return bases;
   }
@@ -47,8 +49,8 @@ export class BasesService {
     const bases = await this.baseRepository.findOne({
       where: { id: id },
       relations: {
-        reviews: true
-      }
+        reviews: true,
+      },
     });
 
     if (!bases) throw new NotFoundException(`Not found base ${id}`);
@@ -57,19 +59,27 @@ export class BasesService {
 
   async update(id: number, updateBaseDto: UpdateBaseDto) {
     const bases = await this.baseRepository.findOne({
-      where: {id: id}
-    })
+      where: { id: id },
+    });
 
-    if(!bases) throw new NotFoundException(`Not found base ${id}`)
+    if (!bases) throw new NotFoundException(`Not found base ${id}`);
     return await this.baseRepository.update(id, updateBaseDto);
   }
 
   async remove(id: number) {
     const bases = await this.baseRepository.findOne({
-      where: {id: id}
-    })
+      where: { id: id },
+    });
 
-    if(!bases) throw new NotFoundException('Not found base')
+    if (!bases) throw new NotFoundException('Not found base');
     return await this.baseRepository.delete(id);
+  }
+
+  async findForAdmin(id: number) {
+    const base = await this.baseRepository.find({
+      where: { user: { id } },
+    });
+    if (!base) throw new NotFoundException('Горнолыжных баз нет!');
+    return base;
   }
 }

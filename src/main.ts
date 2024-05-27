@@ -7,7 +7,10 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin: ['https://skihub-server-production.up.railway.app/', 'http://localhost:3000'], // Разрешенный источник запросов (замените на свой домен)
+    origin: [
+      'https://skihub-server-production.up.railway.app/',
+      'http://localhost:3000',
+    ], // Разрешенный источник запросов (замените на свой домен)
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Разрешенные методы HTTP
     allowedHeaders: ['Content-Type', 'Authorization'], // Разрешенные заголовки запросов
   });
@@ -24,11 +27,17 @@ async function bootstrap() {
     .addTag('tour')
     .addTag('booked-product')
     .addTag('booked-tour')
-    .addApiKey({
-      type: 'apiKey',
-      name: 'Authorization',
-      in: 'header',
-    })
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document, {

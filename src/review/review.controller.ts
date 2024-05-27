@@ -3,9 +3,10 @@ import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('review')
+@ApiBearerAuth('JWT-auth')
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
