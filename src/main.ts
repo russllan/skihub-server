@@ -10,6 +10,7 @@ async function bootstrap() {
     origin: [
       'https://skihub-server-production.up.railway.app/',
       'http://localhost:3000',
+      'http://localhost:5173',
     ], // Разрешенный источник запросов (замените на свой домен)
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Разрешенные методы HTTP
     allowedHeaders: ['Content-Type', 'Authorization'], // Разрешенные заголовки запросов
