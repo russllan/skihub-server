@@ -63,7 +63,8 @@ export class TourService {
     });
 
     if (!tour) throw new NotFoundException('Not found this tour');
-    return await this.tourRepository.update(id, updateTourDto);
+    Object.assign(tour, updateTourDto);
+    return await this.tourRepository.save(tour);
   }
 
   async remove(id: number) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, UsePipes, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ValidationPipe, UsePipes, Req, Put } from '@nestjs/common';
 import { BookedTourService } from './booked-tour.service';
 import { CreateBookedTourDto } from './dto/create-booked-tour.dto';
 import { UpdateBookedTourDto } from './dto/update-booked-tour.dto';
@@ -34,7 +34,7 @@ export class BookedTourController {
     return this.bookedTourService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateBookedTourDto: UpdateBookedTourDto) {
     return this.bookedTourService.update(+id, updateBookedTourDto);

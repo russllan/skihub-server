@@ -63,7 +63,8 @@ export class BasesService {
     });
 
     if (!bases) throw new NotFoundException(`Not found base ${id}`);
-    return await this.baseRepository.update(id, updateBaseDto);
+    Object.assign(bases, updateBaseDto);
+    return await this.baseRepository.save(bases);
   }
 
   async remove(id: number) {

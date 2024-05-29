@@ -50,8 +50,9 @@ export class ReviewService {
     const review = await this.reviewRepository.findOne({
       where: {id: id}
     })
-    if(!review) throw new NotFoundException('Not found review')
-    return await this.reviewRepository.update(id, updateReviewDto);
+    if(!review) throw new NotFoundException('Not found review');
+    Object.assign(review, updateReviewDto);
+    return await this.reviewRepository.save(review);
   }
 
   async remove(id: number) {

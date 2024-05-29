@@ -10,6 +10,7 @@ import {
   UsePipes,
   ValidationPipe,
   Req,
+  Put,
 } from '@nestjs/common';
 import { BasesService } from './bases.service';
 import { CreateBaseDto } from './dto/create-base.dto';
@@ -42,17 +43,18 @@ export class BasesController {
     return this.basesService.findForAdmin(+req.user.id);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.basesService.findOne(+id);
-  }
-
-  @Patch(':id')
+  @Put(':id')
   @ApiBody({ type: UpdateBaseDto })
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateBaseDto: UpdateBaseDto) {
     return this.basesService.update(+id, updateBaseDto);
   }
+  
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.basesService.findOne(+id);
+  }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
