@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // const app = await NestFactory.create(AppModule, { cors: true });
   app.setGlobalPrefix('api');
 
   app.enableCors({
@@ -12,9 +13,21 @@ async function bootstrap() {
       'http://localhost:3000',
       'http://localhost:5173',
     ], // Разрешенный источник запросов (замените на свой домен)
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], // Разрешенные методы HTTP
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'patch', 'OPTIONS', 'HEAD'], // Разрешенные методы HTTP
     allowedHeaders: ['Content-Type', 'Authorization'], // Разрешенные заголовки запросов
   });
+
+  // app.enableCors({
+  //   origin: 'http://localhost:3000', // Укажите нужный вам origin
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  //   allowedHeaders: ['Content-Type', 'Authorization'],
+  //   credentials: true,
+  // });
+
+  // app.enableCors({
+  //     origin: '*', // Разрешенный источник запросов (замените на свой домен)
+  //     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS', // Разрешенные методы HTTP
+  //   });
 
   const config = new DocumentBuilder()
     .setTitle('skihub-server')

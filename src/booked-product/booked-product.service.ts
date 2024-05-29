@@ -93,6 +93,7 @@ export class BookedProductService {
       throw new BadRequestException('This product has already been returned');
     }
 
+    Object.assign(bookedProduct, updateBookedProductDto);
     return await this.bookedProductRepository.update(
       bookedId,
       updateBookedProductDto,

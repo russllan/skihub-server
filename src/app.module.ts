@@ -11,6 +11,7 @@ import { ReviewModule } from './review/review.module';
 import { AuthModule } from './auth/auth.module';
 import { BookedProductModule } from './booked-product/booked-product.module';
 import { BookedTourModule } from './booked-tour/booked-tour.module';
+import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { BookedTourModule } from './booked-tour/booked-tour.module';
     AuthModule,
     BookedProductModule,
     BookedTourModule,
+    SmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

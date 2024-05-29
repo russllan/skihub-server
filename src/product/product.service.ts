@@ -92,7 +92,8 @@ export class ProductService {
     });
 
     if (!product) throw new NotFoundException(`Not found this ${id} product`);
-    return await this.productRepository.update(id, updateProductDto);
+    Object.assign(product, updateProductDto);
+    return await this.productRepository.save(product);
   }
 
   async remove(id: number) {
