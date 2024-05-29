@@ -9,7 +9,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: [
-      'https://skihub-server-production.up.railway.app/',
+      'https://skihub-server-production.up.railway.app',
       'http://localhost:3000',
       'http://localhost:5173',
     ], // Разрешенный источник запросов (замените на свой домен)
