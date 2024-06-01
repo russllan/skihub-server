@@ -3,7 +3,7 @@ import { Product } from 'src/product/entities/product.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from 'typeorm';
 
-@Entity()
+@Entity('payment')
 export class Payment {
   @PrimaryGeneratedColumn()
   id: number;

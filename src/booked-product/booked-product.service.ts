@@ -53,7 +53,7 @@ export class BookedProductService {
       amount: (product[0].cost * createBookedProductDto.amount),
       currency: createBookedProductDto.currency,
     });
-665
+
     let newBookedProduct = {
       isRefund: createBookedProductDto.isRefund,
       endDate: createBookedProductDto.endDate,
