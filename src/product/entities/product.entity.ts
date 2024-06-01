@@ -1,5 +1,6 @@
 import { Base } from 'src/bases/entities/base.entity';
 import { BookedProduct } from 'src/booked-product/entities/booked-product.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Column,
@@ -73,4 +74,8 @@ export class Product {
 
   @OneToMany(() => BookedProduct, (booked) => booked.product, {onDelete: 'CASCADE'})
   bookedProduct: BookedProduct[]
+
+  // payment
+  @OneToMany(() => Payment, (payment) => payment.product)
+  payments: Payment[];
 }

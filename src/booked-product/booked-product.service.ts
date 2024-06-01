@@ -9,15 +9,26 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { BookedProduct } from './entities/booked-product.entity';
 import { Repository } from 'typeorm';
 import { Product } from 'src/product/entities/product.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
+import { ConfigService } from '@nestjs/config';
+import Stripe from 'stripe';
 
 @Injectable()
 export class BookedProductService {
+  private stripe: Stripe;
   constructor(
     @InjectRepository(BookedProduct)
     private readonly bookedProductRepository: Repository<BookedProduct>,
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-  ) {}
+    @InjectRepository(Payment)
+    private readonly paymentRepository: Repository<Payment>,
+    private configService: ConfigService,
+  ) {
+    this.stripe = new Stripe(
+      this.configService.get<string>('STRIPE_SECRET_KEY'),
+    );
+  }
 
   async create(createBookedProductDto: CreateBookedProductDto, id: number) {
     const product = await this.productRepository.findBy({
@@ -28,7 +39,8 @@ export class BookedProductService {
     if (!product.length) throw new NotFoundException('Product not found!');
 
     const existingBooking = await this.bookedProductRepository.findOne({
-      where: { product: createBookedProductDto.product },
+      where: { product: { id: +createBookedProductDto.product } },
+      relations: { payments: true },
     });
 
     if (existingBooking)
@@ -37,6 +49,11 @@ export class BookedProductService {
     product[0].amount -= createBookedProductDto.amount;
     await this.productRepository.save(product);
 
+    const paymentIntent = await this.stripe.paymentIntents.create({
+      amount: (product[0].cost * createBookedProductDto.amount),
+      currency: createBookedProductDto.currency,
+    });
+665
     let newBookedProduct = {
       isRefund: createBookedProductDto.isRefund,
       endDate: createBookedProductDto.endDate,
@@ -47,7 +64,24 @@ export class BookedProductService {
     if (!newBookedProduct)
       throw new BadRequestException('Somithing went wrong!');
 
-    return await this.bookedProductRepository.save(newBookedProduct);
+    const savedBookedProduct =
+      await this.bookedProductRepository.save(newBookedProduct);
+    const payment = this.paymentRepository.create({
+      stripePaymentIntentId: paymentIntent.id,
+      price: paymentIntent.amount,
+      currency: paymentIntent.currency,
+      status: paymentIntent.status,
+      user: { id: id },
+      product: { id: product[0].id },
+      bookedProduct: savedBookedProduct,
+    });
+
+    await this.paymentRepository.save(payment);
+
+    return {
+      bookedProduct: savedBookedProduct,
+      paymentIntentClientSecret: paymentIntent.client_secret,
+    };
   }
 
   async findAll() {

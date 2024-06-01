@@ -5,10 +5,20 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BookedProduct } from './entities/booked-product.entity';
 import { ProductModule } from 'src/product/product.module';
 import { UserModule } from 'src/user/user.module';
+import { PaymentModule } from 'src/payment/payment.module';
+import { Product } from 'src/product/entities/product.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BookedProduct]), ProductModule, UserModule],
+  imports: [
+    TypeOrmModule.forFeature([BookedProduct, Product, Payment]),
+    ProductModule,
+    UserModule,
+    PaymentModule,
+    ConfigModule.forRoot()
+  ],
   controllers: [BookedProductController],
-  providers: [BookedProductService],
+  providers: [BookedProductService, ConfigService],
 })
 export class BookedProductModule {}

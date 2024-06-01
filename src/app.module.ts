@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
 import { BookedProductModule } from './booked-product/booked-product.module';
 import { BookedTourModule } from './booked-tour/booked-tour.module';
 import { SmsModule } from './sms/sms.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { SmsModule } from './sms/sms.module';
     BookedProductModule,
     BookedTourModule,
     SmsModule,
+    PaymentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
