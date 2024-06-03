@@ -50,6 +50,7 @@ export class BasesService {
       where: { id: id },
       relations: {
         reviews: true,
+        productes: true
       },
     });
 
