@@ -10,18 +10,24 @@ export class CreateBookedProductDto {
     // @IsNumber()
     // productes: number;
 
+    // @IsOptional()
+    // @ApiProperty()
+    // @IsNumber()
+    // price:number;
+
+    // @IsNotEmpty()
+    // @ApiProperty()
+    // @IsString()
+    // currency: string;
+
     @IsOptional()
+    @IsBoolean()
     @ApiProperty()
-    @IsNumber()
-    price:number;
+    isRefund: boolean
 
     @IsNotEmpty()
     @ApiProperty()
-    @IsString()
-    currency: string;
-
-    @IsBoolean()
-    isRefund: boolean
+    startDate: string
 
     @IsNotEmpty()
     @ApiProperty()
@@ -35,12 +41,5 @@ export class CreateBookedProductDto {
     @IsNotEmpty()
     @ApiProperty()
     product: Product
-
-    @IsOptional()
-    user: User
-
-    @IsOptional()
-    @ApiProperty()
-    payment: Payment
 
 }

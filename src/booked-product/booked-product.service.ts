@@ -51,11 +51,12 @@ export class BookedProductService {
 
     const paymentIntent = await this.stripe.paymentIntents.create({
       amount: (product[0].cost * createBookedProductDto.amount),
-      currency: createBookedProductDto.currency,
+      currency: 'usd',
     });
 
     let newBookedProduct = {
       isRefund: createBookedProductDto.isRefund,
+      startDate: createBookedProductDto.startDate,
       endDate: createBookedProductDto.endDate,
       product: createBookedProductDto.product,
       user: { id },

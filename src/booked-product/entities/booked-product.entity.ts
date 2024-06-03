@@ -28,6 +28,9 @@ export class BookedProduct {
   @Column({ default: false })
   isRefund: boolean;
 
+  @Column({nullable: true})
+  startDate: string;
+
   @Column()
   endDate: string;
 
