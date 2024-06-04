@@ -71,6 +71,15 @@ export class UserService {
     return await this.userRepository.save(user);
   }
 
+  async adminUpdate(id: number, updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findOne({
+      where: { id: id },
+    });
+    if (!user) throw new NotFoundException('Такого пользователя нет!');
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
+  }
+
   async remove(id: number) {
     const user = await this.userRepository.findOne({
       where: { id: id },
