@@ -50,7 +50,7 @@ export class BookedProductService {
     await this.productRepository.save(product);
 
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: (product[0].cost * createBookedProductDto.amount),
+      amount: product[0].cost * createBookedProductDto.amount,
       currency: 'usd',
     });
 
@@ -148,6 +148,7 @@ export class BookedProductService {
   async findForAdmin(id: number) {
     const bookedProduct = await this.bookedProductRepository.findOne({
       where: { user: { id } },
+      relations: { product: true },
     });
     if (!bookedProduct)
       throw new NotFoundException('Такого забр. продукта нет!');
