@@ -146,8 +146,8 @@ export class BookedProductService {
   }
 
   async findForAdmin(id: number) {
-    const bookedProduct = await this.bookedProductRepository.findOne({
-      where: { user: { id } },
+    const bookedProduct = await this.bookedProductRepository.find({
+      where: { user: { id: id } },
       relations: { product: true },
     });
     if (!bookedProduct)
