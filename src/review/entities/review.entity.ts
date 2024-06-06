@@ -10,7 +10,7 @@ export class Review {
     @Column({ default: 0 })
     rating: number
 
-    @Column()
+    @Column({nullable: true})
     comment: string
 
     // relation
