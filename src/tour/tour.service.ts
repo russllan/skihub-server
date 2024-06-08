@@ -76,7 +76,7 @@ export class TourService {
   }
 
   async findForAdmin(id: number) {
-    const tour = await this.tourRepository.findOne({
+    const tour = await this.tourRepository.find({
       where: { user: { id } },
     });
     if (!tour) throw new NotFoundException('Туров не найдено!');

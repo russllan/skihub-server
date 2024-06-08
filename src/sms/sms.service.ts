@@ -1,19 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { CreateSmDto } from './dto/create-sm.dto';
-import { UpdateSmDto } from './dto/update-sm.dto';
-import { HttpService } from '@nestjs/axios';
-import { firstValueFrom } from 'rxjs';
+import * as https from 'https';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class SmsService {
   private readonly logger = new Logger(SmsService.name);
 
-  constructor(private readonly httpService: HttpService) {}
-  
   async sendSms(phoneNumber: string, message: string) {
     const login = 'russllan';
     const password = 'bFCa1X6n';
-    const transactionId = 'A88726';
+    const transactionId = uuidv4(); // Уникальный идентификатор транзакции
     const sender = 'SMSPRO.KG';
 
     const xmlData = `
@@ -30,25 +26,48 @@ export class SmsService {
       </message>
     `;
 
-    const url = 'http://smspro.nikita.kg/api/message';
+    this.logger.debug(`Sending the following XML data:\n${xmlData}`);
 
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post(url, xmlData, {
-          headers: {
-            'Content-Type': 'application/xml',
-          },
-        })
-      );
+    const options = {
+      hostname: 'smspro.nikita.kg',
+      path: '/api/message',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/xml',
+        'Content-Length': Buffer.byteLength(xmlData),
+      },
+      agent: new https.Agent({ keepAlive: true }), // Поддержка keep-alive
+    };
 
-      this.logger.log('Response from SMS API:', response.data);
+    return new Promise((resolve, reject) => {
+      const req = https.request(options, (res) => {
+        let responseData = '';
 
-      return response.data;
-    } catch (error) {
-      this.logger.error('Error sending SMS:', error.response ? error.response.data : error.message);
-      throw error;
-    }
+        this.logger.debug(`Status code: ${res.statusCode}`);
+        this.logger.debug(`Headers: ${JSON.stringify(res.headers)}`);
 
+        res.on('data', (chunk) => {
+          responseData += chunk;
+        });
+
+        res.on('end', () => {
+          this.logger.log('Response from SMS API:', responseData);
+
+          if (res.statusCode === 200) {
+            resolve(responseData);
+          } else {
+            reject(new Error(`Failed with status code ${res.statusCode}: ${responseData}`));
+          }
+        });
+      });
+
+      req.on('error', (error) => {
+        this.logger.error('Error sending SMS:', error.message);
+        reject(error);
+      });
+
+      req.write(xmlData);
+      req.end();
+    });
   }
-
 }
