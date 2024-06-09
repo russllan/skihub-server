@@ -42,7 +42,7 @@ export class PaymentService {
 
   async getAllPayments(): Promise<Payment[]> {
     return await this.paymentsRepository.find({
-      relations: { user: true, product: { base: true } },
+      relations: { user: true, product: true },
     });
   }
 
