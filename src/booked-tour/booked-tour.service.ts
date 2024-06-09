@@ -65,7 +65,7 @@ export class BookedTourService {
   }
 
   async findForAdmin(id: number) {
-    const bookedTour = await this.bookedTourRepository.findOne({
+    const bookedTour = await this.bookedTourRepository.find({
       where: { user: { id } },
       relations: {tour: true}
     });
