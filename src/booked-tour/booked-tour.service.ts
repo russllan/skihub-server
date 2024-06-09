@@ -67,6 +67,7 @@ export class BookedTourService {
   async findForAdmin(id: number) {
     const bookedTour = await this.bookedTourRepository.findOne({
       where: { user: { id } },
+      relations: {tour: true}
     });
     if (!bookedTour) throw new NotFoundException('Такого забр. тура нет!');
     return bookedTour;
