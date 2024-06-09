@@ -72,10 +72,10 @@ export class Product {
   @JoinColumn({name: "base_id"})
   base: Base
 
-  @OneToMany(() => BookedProduct, (booked) => booked.product, {onDelete: 'CASCADE'})
+  @OneToMany(() => BookedProduct, (booked) => booked.product, {cascade: true})
   bookedProduct: BookedProduct[]
 
   // payment
-  @OneToMany(() => Payment, (payment) => payment.product)
+  @OneToMany(() => Payment, (payment) => payment.product, {cascade: true})
   payments: Payment[];
 }

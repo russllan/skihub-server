@@ -23,10 +23,10 @@ export class Payment {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.payments)
+  @ManyToOne(() => User, (user) => user.payments, {onDelete: 'CASCADE'})
   user: User;
 
-  @ManyToOne(() => Product, (product) => product.payments)
+  @ManyToOne(() => Product, (product) => product.payments, {onDelete: 'CASCADE'})
   product: Product;
 
   @ManyToOne(() => BookedProduct, (bookedProduct) => bookedProduct.payments, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})

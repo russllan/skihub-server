@@ -69,5 +69,6 @@ export class CreateProductDto {
   user: User;
 
   @IsNotEmpty()
+  @ApiProperty()
   base: Base;
 }
