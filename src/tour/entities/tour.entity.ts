@@ -14,6 +14,9 @@ export class Tour {
   @Column()
   location: string;
 
+  @Column({nullable: true})
+  image: string;
+
   @Column()
   cost: number;
 
