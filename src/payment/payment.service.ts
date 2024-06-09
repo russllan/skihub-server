@@ -47,7 +47,7 @@ export class PaymentService {
   }
 
   async getOnePayment(id: number) {
-    return await this.paymentsRepository.findOne({
+    return await this.paymentsRepository.find({
       where: { user: { id } },
     });
   }
