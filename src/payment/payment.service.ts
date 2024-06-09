@@ -46,9 +46,15 @@ export class PaymentService {
     });
   }
 
-  async getOnePayment(id: number): Promise<Payment> {
+  async getOnePayment(id: number) {
     return await this.paymentsRepository.findOne({
-      where: { product: { base: { user: { id: id } } } },
+      where: { user: { id } },
+    });
+  }
+
+  async getAdmin(baseId: number) {
+    return await this.paymentsRepository.find({
+      where: { product: { base: { id: baseId } } },
     });
   }
 }

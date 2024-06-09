@@ -41,6 +41,7 @@ async function bootstrap() {
     .addTag('tour')
     .addTag('booked-product')
     .addTag('booked-tour')
+    .addTag('payment')
     .addBearerAuth(
       {
         type: 'http',
