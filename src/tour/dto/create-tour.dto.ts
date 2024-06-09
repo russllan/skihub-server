@@ -14,6 +14,11 @@ export class CreateTourDto {
   location: string;
 
   @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  image: string;
+
+  @IsNotEmpty()
   @IsNumber()
   @ApiProperty()
   cost: number;
