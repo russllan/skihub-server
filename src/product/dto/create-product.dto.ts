@@ -49,15 +49,15 @@ export class CreateProductDto {
   @ApiProperty()
   text?: string;
 
-  @IsOptional()
-  @IsDate()
-  @ApiProperty()
-  startDate: Date;
+  // @IsOptional()
+  // @IsDate()
+  // @ApiProperty()
+  // startDate: Date;
 
-  @IsOptional()
-  @IsDate()
-  @ApiProperty()
-  endDate: Date;
+  // @IsOptional()
+  // @IsDate()
+  // @ApiProperty()
+  // endDate: Date;
 
   @ApiProperty()
   status: string;
