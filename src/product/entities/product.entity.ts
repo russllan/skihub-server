@@ -52,11 +52,11 @@ export class Product {
   @Column({ nullable: true })
   text: string;
 
-  @Column({ type: 'timestamp' })
-  startDate: Date;
+  // @Column({ type: 'timestamp' })
+  // startDate: Date;
 
-  @Column({ type: 'timestamp' })
-  endDate: Date;
+  // @Column({ type: 'timestamp' })
+  // endDate: Date;
 
   @Column({ default: 'standart' })
   status: string;
