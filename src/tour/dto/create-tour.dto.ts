@@ -36,6 +36,10 @@ export class CreateTourDto {
   @ApiProperty()
   amountDay: number;
 
+  @IsNumber()
+  @ApiProperty()
+  amount: number;
+
   @IsNotEmpty()
   @IsDate()
   @ApiProperty()

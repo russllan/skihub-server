@@ -8,27 +8,47 @@ import { UpdateBookedTourDto } from './dto/update-booked-tour.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookedTour } from './entities/booked-tour.entity';
 import { Repository } from 'typeorm';
+import { Tour } from 'src/tour/entities/tour.entity';
 
 @Injectable()
 export class BookedTourService {
   constructor(
     @InjectRepository(BookedTour)
     private readonly bookedTourRepository: Repository<BookedTour>,
+    @InjectRepository(Tour)
+    private readonly tourRepository: Repository<Tour>,
   ) {}
 
   async create(createBookedTourDto: CreateBookedTourDto, id: number) {
     const isExist = await this.bookedTourRepository.findBy({
-      user: createBookedTourDto.user,
+      user: { id: id },
       tour: createBookedTourDto.tour,
     });
     if (isExist.length)
       throw new BadRequestException('Этот Тур уже забронирован!');
+    const tour = await this.tourRepository.findOne({
+      where: { id: +createBookedTourDto.tour },
+    });
+    if (!tour) throw new NotFoundException('Такого тура нет!');
+    if (tour.amount < createBookedTourDto.amount) {
+      throw new BadRequestException(
+        'Недостаточно доступных туров для бронирования!',
+      );
+    }
+    tour.amount -= createBookedTourDto.amount;
     const newBookedTour = {
       isCancel: createBookedTourDto.isCancel,
+      amount: createBookedTourDto.amount,
       user: { id },
       tour: createBookedTourDto.tour,
     };
-    return await this.bookedTourRepository.save(newBookedTour);
+    await this.bookedTourRepository.manager.transaction(
+      async (transactionalEntityManager) => {
+        await transactionalEntityManager.save(Tour, tour);
+        await transactionalEntityManager.save(BookedTour, newBookedTour);
+      },
+    );
+    return newBookedTour;
   }
 
   async findAll() {
@@ -67,7 +87,7 @@ export class BookedTourService {
   async findForAdmin(id: number) {
     const bookedTour = await this.bookedTourRepository.find({
       where: { user: { id } },
-      relations: {tour: true}
+      relations: { tour: true },
     });
     if (!bookedTour) throw new NotFoundException('Такого забр. тура нет!');
     return bookedTour;

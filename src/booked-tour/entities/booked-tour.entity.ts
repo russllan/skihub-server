@@ -13,6 +13,9 @@ export class BookedTour {
     @Column()
     isCancel: boolean
 
+    @Column({default: 1})
+    amount: number
+
     // relation
     @ManyToOne(() => User, (user) => user.bookedTour)
     @JoinColumn({name: 'user_id'})
