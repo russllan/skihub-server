@@ -29,6 +29,9 @@ export class Tour {
   @Column({ default: 1 })
   amountDay: number;
 
+  @Column({ default: 1 })
+  amount: number;
+
   @Column({ type: 'timestamp' })
   startDate: Date;
 

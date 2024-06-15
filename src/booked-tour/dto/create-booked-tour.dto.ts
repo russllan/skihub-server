@@ -10,6 +10,10 @@ export class CreateBookedTourDto {
 
     @ApiProperty()
     @IsOptional()
+    amount: number
+
+    @ApiProperty()
+    @IsOptional()
     user?: User
 
     @ApiProperty()

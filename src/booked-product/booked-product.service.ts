@@ -87,7 +87,7 @@ export class BookedProductService {
 
   async findAll() {
     const bookedProduct = await this.bookedProductRepository.find({
-      relations: { product: true },
+      relations: { product: {base: true} },
     });
     if (!bookedProduct) throw new NotFoundException('Not found booked product');
 
@@ -148,6 +148,16 @@ export class BookedProductService {
   async findForAdmin(id: number) {
     const bookedProduct = await this.bookedProductRepository.find({
       where: { user: { id: id } },
+      relations: { product: true },
+    });
+    if (!bookedProduct)
+      throw new NotFoundException('Такого забр. продукта нет!');
+    return bookedProduct;
+  }
+
+  async adminGetForAdmin(id: number) {
+    const bookedProduct = await this.bookedProductRepository.find({
+      where: { product: { base: { user: { id: id } } } },
       relations: { product: true },
     });
     if (!bookedProduct)

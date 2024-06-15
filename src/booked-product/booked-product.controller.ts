@@ -31,6 +31,12 @@ export class BookedProductController {
     return this.bookedProductService.findForAdmin(+req.user.id);
   }
 
+  @Get('adminGetForAdmin')
+  @UseGuards(JwtAuthGuard)
+  adminGetForAdmin(@Req() req) {
+    return this.bookedProductService.adminGetForAdmin(+req.user.id);
+  }
+
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id: string) {

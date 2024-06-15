@@ -31,6 +31,7 @@ export class TourService {
       status: createTourDto.status,
       text: createTourDto.text,
       amountDay: createTourDto.amountDay,
+      amount: createTourDto.amount,
       startDate: createTourDto.startDate,
       endDate: createTourDto.endDate,
       base: createTourDto.base,
