@@ -1,7 +1,14 @@
 import { Base } from 'src/bases/entities/base.entity';
 import { BookedTour } from 'src/booked-tour/entities/booked-tour.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('tour')
 export class Tour {
@@ -14,7 +21,7 @@ export class Tour {
   @Column()
   location: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   image: string;
 
   @Column()
@@ -42,15 +49,18 @@ export class Tour {
   isBooked: boolean;
 
   // Отношение, связи
-  @ManyToOne(() => User, (user) => user.toures, {onDelete: "CASCADE"})
-  @JoinColumn({name: "user_id"})
-  user: User
+  @ManyToOne(() => User, (user) => user.toures, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 
-  @ManyToOne(() => Base, (base) => base.toures, {onDelete: "CASCADE"})
-  @JoinColumn({name: "base_id"})
-  base: Base
+  @ManyToOne(() => Base, (base) => base.toures, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'base_id' })
+  base: Base;
 
   // booked-tour
-  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.tour)
-  bookedTour: BookedTour[]
+  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.tour, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  bookedTour: BookedTour[];
 }

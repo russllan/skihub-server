@@ -50,6 +50,6 @@ export class BookedProduct {
   user: User;
 
   // payment
-  @OneToMany(() => Payment, (payment) => payment.bookedProduct, {onDelete: 'CASCADE'})
+  @OneToMany(() => Payment, (payment) => payment.bookedProduct, { cascade: true, onDelete: 'CASCADE' })
   payments: Payment[];
 }
