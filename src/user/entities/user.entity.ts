@@ -32,26 +32,26 @@ export class User {
 
   // Отношение, связи между таблицами
 
-  @OneToMany(() => Product, (product) => product.user)
+  @OneToMany(() => Product, (product) => product.user, { cascade: true, onDelete: 'CASCADE' })
   productes: Product[]
 
-  @OneToMany(() => Tour, (tour) => tour.user)
+  @OneToMany(() => Tour, (tour) => tour.user, { cascade: true, onDelete: 'CASCADE' })
   toures: Tour[]
 
-  @OneToMany(() => Base, (base) => base.user)
+  @OneToMany(() => Base, (base) => base.user, { cascade: true, onDelete: 'CASCADE' })
   bases: Base[]
 
-  @OneToMany(() => Review, (review) => review.user)
+  @OneToMany(() => Review, (review) => review.user, { cascade: true, onDelete: 'CASCADE' })
   review: Review[]
 
-  @OneToMany(() => BookedProduct, (booked) => booked.user) 
+  @OneToMany(() => BookedProduct, (booked) => booked.user, { cascade: true, onDelete: 'CASCADE' }) 
   bookedProduct: BookedProduct[]
 
   // booked-tour
-  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.user)
+  @OneToMany(() => BookedTour, (bookedTour) => bookedTour.user, { cascade: true, onDelete: 'CASCADE' })
   bookedTour: BookedTour[]
 
   // payment
-  @OneToMany(() => Payment, (payment) => payment.user)
+  @OneToMany(() => Payment, (payment) => payment.user, { cascade: true, onDelete: 'CASCADE' })
   payments: Payment[];
 }

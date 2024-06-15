@@ -17,11 +17,11 @@ export class BookedTour {
     amount: number
 
     // relation
-    @ManyToOne(() => User, (user) => user.bookedTour)
+    @ManyToOne(() => User, (user) => user.bookedTour, {onDelete: 'CASCADE'})
     @JoinColumn({name: 'user_id'})
     user: User;
 
-    @ManyToOne(() => Tour, (tour) => tour.bookedTour)
+    @ManyToOne(() => Tour, (tour) => tour.bookedTour, {onDelete: 'CASCADE'})
     @JoinColumn({name: 'tour_id'})
     tour: Tour
 }
