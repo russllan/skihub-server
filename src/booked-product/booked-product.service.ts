@@ -59,6 +59,7 @@ export class BookedProductService {
       startDate: createBookedProductDto.startDate,
       endDate: createBookedProductDto.endDate,
       product: createBookedProductDto.product,
+      amount: createBookedProductDto.amount,
       user: { id },
     };
 
