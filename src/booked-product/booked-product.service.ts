@@ -50,7 +50,7 @@ export class BookedProductService {
     await this.productRepository.save(product);
 
     const paymentIntent = await this.stripe.paymentIntents.create({
-      amount: product[0].cost * createBookedProductDto.amount * 100,
+      amount: (product[0].cost * createBookedProductDto.amount * 100) / 2,
       currency: 'kgs',
     });
 
